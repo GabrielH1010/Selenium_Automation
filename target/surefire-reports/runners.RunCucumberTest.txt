@@ -1,0 +1,21 @@
+-------------------------------------------------------------------------------
+Test set: runners.RunCucumberTest
+-------------------------------------------------------------------------------
+Tests run: 1, Failures: 0, Errors: 1, Skipped: 0, Time elapsed: 9.322 s <<< FAILURE! -- in runners.RunCucumberTest
+Login no Swag Labs.Login com sucesso -- Time elapsed: 8.119 s <<< ERROR!
+io.cucumber.junit.UndefinedStepException: 
+The step 'que o usuário está na página de login do Swag Labs' and 1 other step(s) are undefined.
+You can implement these steps using the snippet(s) below:
+
+@Dado("que o usuário está na página de login do Swag Labs")
+public void que_o_usuário_está_na_página_de_login_do_swag_labs() {
+    // Write code here that turns the phrase above into concrete actions
+    throw new io.cucumber.java.PendingException();
+}
+@Quando("ele preenche o usuário e senha válidos")
+public void ele_preenche_o_usuário_e_senha_válidos() {
+    // Write code here that turns the phrase above into concrete actions
+    throw new io.cucumber.java.PendingException();
+}
+
+
