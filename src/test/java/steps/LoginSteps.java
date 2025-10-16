@@ -1,15 +1,25 @@
 package steps;
 
-import hooks.Hooks;
 import io.cucumber.java.pt.*;
 import org.junit.Assert;
-import pages.*;
+import org.openqa.selenium.WebDriver;
+import pages.LoginPage;
+import pages.ProdutosPage;
+import utils.DriverFactory;
 
 public class LoginSteps {
     private String usuario = "standard_user";
     private String senha = "secret_sauce";
-    private LoginPage loginPage = new LoginPage(Hooks.driver);
-    private ProductsPage productsPage = new ProductsPage(Hooks.driver);
+
+    private WebDriver driver;
+    private ProdutosPage produtosPage;
+    private LoginPage loginPage;
+
+    public LoginSteps() {
+        this.driver = DriverFactory.getDriver();
+        this.loginPage = new LoginPage();
+        this.produtosPage = new ProdutosPage();
+    }
 
     @Dado("que o usuário está na página de login do Swag Labs")
     public void acessarPaginaLogin() {
@@ -25,7 +35,7 @@ public class LoginSteps {
 
     @Entao("ele deve ser redirecionado para a tela de produtos")
     public void validarTelaProdutos() {
-        Assert.assertEquals("Products", productsPage.getTitulo());
+        Assert.assertEquals("Products", produtosPage.getTitulo());
     }
 
     @Dado("que o usuário está na página de login")

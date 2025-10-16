@@ -1,51 +1,46 @@
 package pages;
-
-import org.openqa.selenium.*;
-import org.openqa.selenium.support.ui.*;
+import org.openqa.selenium.By;
 import utils.YamlUtils;
-import java.time.Duration;
 
-public class LoginPage {
-    private WebDriver driver;
+public class LoginPage extends BasePage {
 
-    private By usernameField = By.id("user-name");
-    private By passwordField = By.id("password");
-    private By loginButton = By.id("login-button");
-    private By erroMensagem = By.cssSelector("[data-test='error']");
+    private final By usernameField = By.id("user-name");
+    private final By passwordField = By.id("password");
+    private final By loginButton = By.id("login-button");
+    private final By erroMensagem = By.cssSelector("[data-test='error']");
 
-    public LoginPage(WebDriver driver) {
-        this.driver = driver;
+    public LoginPage() {
+        super();
     }
 
     public void acessarPagina() {
-        driver.get(YamlUtils.getValorAmbiente("ambientes.login"));
+        navegar(YamlUtils.getValorAmbiente("ambientes.login"));
     }
 
     public void preencherUsuario(String usuario) {
-        driver.findElement(usernameField).sendKeys(usuario);
+        preencherTexto(usernameField, usuario);
     }
 
     public void preencherSenha(String senha) {
-        driver.findElement(passwordField).sendKeys(senha);
-    }
-
-    public boolean validaMensagemAparece() {
-        try {
-            WebDriverWait wait = new WebDriverWait(driver, Duration.ofSeconds(5));
-            WebElement element = wait.until(ExpectedConditions.visibilityOfElementLocated(erroMensagem));
-            return element.isDisplayed();
-        } catch (Exception e) {
-            return false;
-        }
-    }
-
-    public String mensagemErro() {
-        WebDriverWait wait = new WebDriverWait(driver, Duration.ofSeconds(5));
-        WebElement element = wait.until(ExpectedConditions.visibilityOfElementLocated(erroMensagem));
-        return element.getText();
+        preencherTexto(passwordField, senha);
     }
 
     public void clicarLogin() {
-        driver.findElement(loginButton).click();
+        clicar(loginButton);
+    }
+
+    public boolean validaMensagemAparece() {
+        return elementoVisivel(erroMensagem);
+    }
+
+    public String mensagemErro() {
+        return capturarTexto(erroMensagem);
+    }
+
+    public void loginComSucesso() {
+        acessarPagina();
+        preencherUsuario("standard_user");
+        preencherSenha("secret_sauce");
+        clicarLogin();
     }
 }

@@ -1,23 +1,20 @@
 package hooks;
 
-import io.cucumber.java.After;
-import io.cucumber.java.Before;
-import org.openqa.selenium.WebDriver;
-import org.openqa.selenium.chrome.ChromeDriver;
+import io.cucumber.java.*;
+import utils.DriverFactory;
 
 public class Hooks {
-    public static WebDriver driver;
+    DriverFactory DriverFactory;
 
+    // Garante que o driver está ativo antes de cada cenário
     @Before
-    public void setup() {
-        driver = new ChromeDriver();
-        driver.manage().window().maximize();
+    public void beforeScenario() {
+        DriverFactory.getDriver();
     }
 
+    // Fecha apenas ao final de cada cenário
     @After
-    public void tearDown() {
-        if (driver != null) {
-            driver.quit();
-        }
+    public void afterScenario() {
+        DriverFactory.quitDriver();
     }
 }
