@@ -1,13 +1,15 @@
 package pages;
+
 import org.openqa.selenium.By;
+import org.openqa.selenium.JavascriptExecutor;
 import utils.YamlUtils;
 
 public class LoginPage extends BasePage {
 
-    private final By usernameField = By.id("user-name");
-    private final By passwordField = By.id("password");
-    private final By loginButton = By.id("login-button");
-    private final By erroMensagem = By.cssSelector("[data-test='error']");
+    private final By inputUsuario = By.id("user-name");
+    private final By inputSenha = By.id("password");
+    private final By botaoLogin = By.id("login-button");
+    private final By mensagemErro = By.cssSelector("[data-test='error']");
 
     public LoginPage() {
         super();
@@ -18,23 +20,23 @@ public class LoginPage extends BasePage {
     }
 
     public void preencherUsuario(String usuario) {
-        preencherTexto(usernameField, usuario);
+        preencherTexto(inputUsuario, usuario);
     }
 
     public void preencherSenha(String senha) {
-        preencherTexto(passwordField, senha);
+        preencherTexto(inputSenha, senha);
     }
 
     public void clicarLogin() {
-        clicar(loginButton);
+        clicar(botaoLogin);
     }
 
     public boolean validaMensagemAparece() {
-        return elementoVisivel(erroMensagem);
+        return elementoVisivel(mensagemErro);
     }
 
     public String mensagemErro() {
-        return capturarTexto(erroMensagem);
+        return capturarTexto(mensagemErro);
     }
 
     public void loginComSucesso() {
@@ -42,5 +44,12 @@ public class LoginPage extends BasePage {
         preencherUsuario("standard_user");
         preencherSenha("secret_sauce");
         clicarLogin();
+    }
+
+    public void loginDireto() {
+        navegar(YamlUtils.getValorAmbiente("ambientes.produto"));
+        JavascriptExecutor js = (JavascriptExecutor) driver;
+        js.executeScript("window.localStorage.setItem('session-username', 'standard_user');");
+        driver.navigate().refresh();
     }
 }

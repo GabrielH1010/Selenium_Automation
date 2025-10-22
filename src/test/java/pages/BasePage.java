@@ -1,9 +1,9 @@
 package pages;
+
 import org.openqa.selenium.*;
 import org.openqa.selenium.support.ui.ExpectedConditions;
 import org.openqa.selenium.support.ui.WebDriverWait;
 import utils.DriverFactory;
-
 import java.time.Duration;
 
 public abstract class BasePage {
@@ -12,7 +12,6 @@ public abstract class BasePage {
     protected WebDriverWait wait;
 
     public BasePage() {
-        //Usado para capturar o driver ativo gerenciado pela DriverFactory
         this.driver = DriverFactory.getDriver();
         this.wait = new WebDriverWait(this.driver, Duration.ofSeconds(10));
     }

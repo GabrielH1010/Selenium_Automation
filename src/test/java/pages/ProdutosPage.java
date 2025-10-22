@@ -1,45 +1,52 @@
 package pages;
+
 import org.openqa.selenium.*;
 import org.openqa.selenium.support.ui.*;
+import utils.YamlUtils;
 import java.time.Duration;
 import java.util.*;
 import java.util.stream.Collectors;
+import static org.junit.Assert.assertEquals;
 
 public class ProdutosPage extends BasePage {
 
-    private By productTitle = By.cssSelector(".inventory_item_name");
-    private By sortDropdown = By.cssSelector(".product_sort_container");
-    private By addToCartButton = By.cssSelector(".btn_inventory");
-    private By cartBadge = By.cssSelector(".shopping_cart_badge");
+    private By tituloProduto = By.cssSelector(".inventory_item_name");
+    private By filtro = By.cssSelector(".product_sort_container");
+    private By adicionarAoCarrinho = By.id("add-to-cart-sauce-labs-backpack");
+    private By removerDoCarrinho = By.id("remove-sauce-labs-bike-light");
+    private By iconeCarrinho = By.cssSelector(".shopping_cart_badge");
     private By tituloPagina = By.cssSelector(".title");
 
     public ProdutosPage() {
         super();
     }
 
-    public String getTitulo() {
-        return driver.findElement(tituloPagina).getText();
-    }
-
     public void aguardarTelaProdutosCarregar() {
         WebDriverWait wait = new WebDriverWait(driver, Duration.ofSeconds(10));
+        String urlAtual = driver.getCurrentUrl();
+        String urlEsperada = YamlUtils.getValorAmbiente("ambientes.produto");
+        assertEquals("A URL atual não é a esperada na tela de produtos.", urlEsperada, urlAtual);
 
         try {
-            driver.switchTo().alert().dismiss(); // Ignora popups, se existirem
+            driver.switchTo().alert().dismiss();
         } catch (NoAlertPresentException ignored) {}
 
-        wait.until(ExpectedConditions.visibilityOfElementLocated(sortDropdown));
-        wait.until(ExpectedConditions.visibilityOfElementLocated(productTitle));
+        wait.until(ExpectedConditions.visibilityOfElementLocated(filtro));
+        wait.until(ExpectedConditions.visibilityOfElementLocated(tituloProduto));
     }
 
     public List<String> getListaDeProdutos() {
-        List<WebElement> produtos = driver.findElements(productTitle);
+        List<WebElement> produtos = driver.findElements(tituloProduto);
         return produtos.stream().map(WebElement::getText).collect(Collectors.toList());
+    }
+
+    public String getTituloPagina() {
+        return capturarTexto(tituloPagina);
     }
 
     public void selecionarOrdenacao(String criterio) {
         aguardarTelaProdutosCarregar();
-        Select select = new Select(driver.findElement(sortDropdown));
+        Select select = new Select(driver.findElement(filtro));
         select.selectByValue(criterio);
     }
 
@@ -81,14 +88,34 @@ public class ProdutosPage extends BasePage {
 
     public void adicionarPrimeiroProdutoAoCarrinho() {
         aguardarTelaProdutosCarregar();
-        List<WebElement> botoes = driver.findElements(addToCartButton);
+        List<WebElement> botoes = driver.findElements(adicionarAoCarrinho);
         if (!botoes.isEmpty()) {
             botoes.get(0).click();
         }
     }
 
+    public void removerProdutoAoCarrinho() {
+        aguardarTelaProdutosCarregar();
+        adicionarPrimeiroProdutoAoCarrinho();
+        List<WebElement> botoes = driver.findElements(removerDoCarrinho);
+        if (!botoes.isEmpty()) {
+            botoes.get(0).click();
+        }
+    }
+
+    //Valida de quando adicionar o produto, deve ser refletido no icone e se for vazio deverá retornar um valor string igual a 0
     public String getQuantidadeCarrinho() {
         aguardarTelaProdutosCarregar();
-        return driver.findElement(cartBadge).getText();
+        List<WebElement> badge = driver.findElements(iconeCarrinho);
+        return badge.isEmpty() ? "0" : badge.get(0).getText();
+    }
+
+    public void adicionarProdutoParaCompra() {
+        aguardarTelaProdutosCarregar();
+        List<WebElement> botoes = driver.findElements(adicionarAoCarrinho);
+        if (!botoes.isEmpty()) {
+            botoes.get(0).click();
+            clicar(iconeCarrinho);
+        }
     }
 }

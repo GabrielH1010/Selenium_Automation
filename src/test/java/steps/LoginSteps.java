@@ -35,7 +35,7 @@ public class LoginSteps {
 
     @Entao("ele deve ser redirecionado para a tela de produtos")
     public void validarTelaProdutos() {
-        Assert.assertEquals("Products", produtosPage.getTitulo());
+        Assert.assertEquals("Products", produtosPage.getTituloPagina());
     }
 
     @Dado("que o usuário está na página de login")
@@ -50,7 +50,7 @@ public class LoginSteps {
         loginPage.clicarLogin();
     }
 
-    @Então("deve ser apresentado a mensagem de erro na tela")
+    @Entao("deve ser apresentado a mensagem de erro na tela")
     public void deveSerApresentadoAMensagemDeErroNaTela() {
         Assert.assertTrue("Mensagem de erro não apareceu!", loginPage.validaMensagemAparece());
         String expectedText = "Epic sadface: Username and password do not match any user in this service";
