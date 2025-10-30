@@ -1,11 +1,12 @@
 package steps;
 
-import io.cucumber.java.pt.*;
 import org.junit.Assert;
 import org.openqa.selenium.WebDriver;
-import pages.LoginPage;
-import pages.ProdutosPage;
 import utils.DriverFactory;
+import io.cucumber.java.pt.Dado;
+import io.cucumber.java.pt.Quando;
+import io.cucumber.java.pt.Entao;
+import pages.*;
 
 public class LoginSteps {
     private String usuario = "standard_user";
@@ -21,23 +22,7 @@ public class LoginSteps {
         this.produtosPage = new ProdutosPage();
     }
 
-    @Dado("que o usuário está na página de login do Swag Labs")
-    public void acessarPaginaLogin() {
-        loginPage.acessarPagina();
-    }
-
-    @Quando("ele preenche o usuário e senha válidos")
-    public void preencherCamposValidos() {
-        loginPage.preencherUsuario(usuario);
-        loginPage.preencherSenha(senha);
-        loginPage.clicarLogin();
-    }
-
-    @Entao("ele deve ser redirecionado para a tela de produtos")
-    public void validarTelaProdutos() {
-        Assert.assertEquals("Products", produtosPage.getTituloPagina());
-    }
-
+    //CT001 - Login com senha inválida
     @Dado("que o usuário está na página de login")
     public void queOUsuarioEstaNaPaginaDeLogin() {
         loginPage.acessarPagina();
@@ -54,5 +39,24 @@ public class LoginSteps {
     public void deveSerApresentadoAMensagemDeErroNaTela() {
         Assert.assertTrue("Mensagem de erro não apareceu!", loginPage.validaMensagemAparece());
         String expectedText = "Epic sadface: Username and password do not match any user in this service";
-        Assert.assertEquals(expectedText, loginPage.mensagemErro());    }
+        Assert.assertEquals(expectedText, loginPage.mensagemErro());
+    }
+
+    //CT002 - Login com sucesso
+    @Dado("que o usuário está na página de login do Swag Labs")
+    public void queOUsuarioEstaNaPaginaDeLoginDoSwagLabs() {
+        loginPage.acessarPagina();
+    }
+
+    @Quando("ele preenche o usuário e senha válidos")
+    public void elePreencheOUsuarioESenhaValidos() {
+        loginPage.preencherUsuario(usuario);
+        loginPage.preencherSenha(senha);
+        loginPage.clicarLogin();
+    }
+
+    @Entao("ele deve ser redirecionado para a tela de produtos")
+    public void eleDeveSerRedirecionadoParaATelaDeProdutos() {
+        Assert.assertEquals("Products", produtosPage.getTituloPagina());
+    }
 }

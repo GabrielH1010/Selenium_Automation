@@ -17,6 +17,8 @@ public class CarrinhoPage extends BasePage {
     private By precoProduto = By.cssSelector(".inventory_item_price");
     private By botaoContinueShopping = By.id("continue-shopping");
     private By botaoRemoverItem = By.cssSelector(".cart_button");
+    private By botaoCheckout = By.id("checkout");
+
 
     public CarrinhoPage() {
         super();
@@ -27,7 +29,7 @@ public class CarrinhoPage extends BasePage {
     }
 
     public void aguardarTelaCarrinhoCarregar() {
-        WebDriverWait wait = new WebDriverWait(driver, Duration.ofSeconds(10));
+        WebDriverWait wait = new WebDriverWait(driver, Duration.ofSeconds(3));
         String urlAtual = driver.getCurrentUrl();
         String urlEsperada = YamlUtils.getValorAmbiente("ambientes.carrinho");
 
@@ -46,40 +48,62 @@ public class CarrinhoPage extends BasePage {
         clicar(botaoRemoverItem);
     }
 
+    public void botaoCheckout() {
+        System.out.println("Tentando clicar no botão Checkout");
+        clicar(botaoCheckout);
+        System.out.println("Clique realizado");    }
+
     public boolean botaoEstaVisivel(String textoBotao) {
         By botao = By.xpath("//button[text()='" + textoBotao + "']");
         return elementoVisivel(botao);
     }
 
-    // Espera até o item ser removido
     public boolean carrinhoEstaVazio() {
+        aguardarTelaCarrinhoCarregar();
         WebDriverWait wait = new WebDriverWait(driver, Duration.ofSeconds(10));
-        wait.until(ExpectedConditions.invisibilityOfElementLocated(item));
-        List<WebElement> produtos = driver.findElements(item);
-        return produtos.isEmpty();
+
+        try {
+            // Aguarda até não existirem mais itens visíveis no carrinho
+            boolean vazio = wait.until(driver -> {
+                List<WebElement> produtos = driver.findElements(item);
+                return produtos.isEmpty();
+            });
+
+            System.out.println("[INFO] Carrinho está vazio: " + vazio);
+            return vazio;
+        } catch (TimeoutException e) {
+            System.out.println("[WARN] Tempo limite atingido — ainda existem itens no carrinho.");
+            return false;
+        }
     }
 
-    public void verificaDadosProduto(){
+    public boolean verificarSeCarrinhoTemProduto() {
+        aguardarTelaCarrinhoCarregar();
         List<WebElement> produtos = driver.findElements(item);
-        if (!produtos.isEmpty()){
+        return !produtos.isEmpty();
+    }
+
+    public void verificaDadosProduto() {
+        List<WebElement> produtos = driver.findElements(item);
+        if (!produtos.isEmpty()) {
             WebElement produto = produtos.get(0);
 
             String nome = produto.findElement(tituloProduto).getText();
             String descricao = produto.findElement(descricaoProduto).getText();
             String preco = produto.findElement(precoProduto).getText();
 
-            // Valores esperados do produto adicionado
+            // Valores esperados do produto adicionado no carrinho
             String nomeEsperado = "Sauce Labs Backpack";
             String descricaoEsperada = "carry.allTheThings() with the sleek, streamlined Sly Pack that melds uncompromising style with unequaled laptop and tablet protection.";
             String precoEsperado = "$29.99";
 
-            Assert.assertEquals(nome, nomeEsperado);
-            Assert.assertEquals(descricao, descricaoEsperada);
-            Assert.assertEquals(preco, precoEsperado);
+            Assert.assertEquals(nomeEsperado, nome);
+            Assert.assertEquals(descricaoEsperada, descricao);
+            Assert.assertEquals(precoEsperado, preco);
 
-            System.out.println("Dados do produto exibidos corretamente!");
+            System.out.println("[INFO] Dados do produto exibidos corretamente!");
         } else {
-            Assert.fail("Produto não está na lista");
+            Assert.fail("Produto não está na lista do carrinho!");
         }
     }
 }

@@ -13,11 +13,18 @@ public abstract class BasePage {
 
     public BasePage() {
         this.driver = DriverFactory.getDriver();
-        this.wait = new WebDriverWait(this.driver, Duration.ofSeconds(10));
+        this.wait = new WebDriverWait(this.driver, Duration.ofSeconds(3));
     }
 
     protected void clicar(By locator) {
-        wait.until(ExpectedConditions.elementToBeClickable(locator)).click();
+        WebDriverWait wait = new WebDriverWait(driver, Duration.ofSeconds(3));
+        try {
+            WebElement elemento = wait.until(ExpectedConditions.elementToBeClickable(locator));
+            elemento.click();
+        } catch (Exception e) {
+            System.err.println("Não foi possível clicar no elemento: " + locator);
+            throw e;
+        }
     }
 
     protected void preencherTexto(By locator, String text) {

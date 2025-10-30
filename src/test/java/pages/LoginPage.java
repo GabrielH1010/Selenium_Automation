@@ -1,7 +1,6 @@
 package pages;
 
 import org.openqa.selenium.By;
-import org.openqa.selenium.JavascriptExecutor;
 import utils.YamlUtils;
 
 public class LoginPage extends BasePage {
@@ -10,6 +9,7 @@ public class LoginPage extends BasePage {
     private final By inputSenha = By.id("password");
     private final By botaoLogin = By.id("login-button");
     private final By mensagemErro = By.cssSelector("[data-test='error']");
+    private ProdutosPage produtosPage;
 
     public LoginPage() {
         super();
@@ -40,16 +40,16 @@ public class LoginPage extends BasePage {
     }
 
     public void loginComSucesso() {
-        acessarPagina();
-        preencherUsuario("standard_user");
-        preencherSenha("secret_sauce");
-        clicarLogin();
-    }
+        this.produtosPage = new ProdutosPage();
+        String rotaAtual = driver.getCurrentUrl();
+        String rotaProduto = YamlUtils.getValorAmbiente("ambientes.produto");
 
-    public void loginDireto() {
-        navegar(YamlUtils.getValorAmbiente("ambientes.produto"));
-        JavascriptExecutor js = (JavascriptExecutor) driver;
-        js.executeScript("window.localStorage.setItem('session-username', 'standard_user');");
-        driver.navigate().refresh();
+        if (!rotaAtual.equals(rotaProduto)) {
+            acessarPagina();
+            preencherUsuario("standard_user");
+            preencherSenha("secret_sauce");
+            clicarLogin();
+            produtosPage.aguardarTelaProdutosCarregar();
+        }
     }
 }

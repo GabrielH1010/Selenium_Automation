@@ -3,7 +3,7 @@ Funcionalidade: Tela do checkout
 
     Cenário: CT001 - Campos obrigatórios não preenchidos
         Dado que o usuário esteja na tela de checkout
-        Quando clicar no botão "Continue" sem preencher os campos
+        Quando clicar no botão "Continue" sem preencher nenhum campo
         Entao a mensagem de erro "Error: First Name is required" deve ser exibida
 
     Cenário: CT002 - Preencher apenas o campo First Name
@@ -20,3 +20,4 @@ Funcionalidade: Tela do checkout
         Dado que o usuário esteja na tela de resumo do produto
         Quando clicar no botão "Finish"
         Entao a mensagem "Thank you for your order!" deve ser exibida
+        E o botão "Back to home" deve ser apresentado

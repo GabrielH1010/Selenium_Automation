@@ -22,10 +22,8 @@ public class Hooks {
         if (!loginInicial) {
             System.out.println("----------Fazendo login inicial----------");
             loginPage.loginComSucesso();
-            produtosPage.aguardarTelaProdutosCarregar();
             loginInicial = true;
         } else {
-            loginPage.loginDireto();
             produtosPage.aguardarTelaProdutosCarregar();
         }
     }

@@ -1,13 +1,12 @@
 package steps;
 
-import io.cucumber.java.pt.Dado;
-import io.cucumber.java.pt.Entao;
-import io.cucumber.java.pt.Quando;
 import org.junit.Assert;
 import org.openqa.selenium.WebDriver;
-import pages.CarrinhoPage;
-import pages.ProdutosPage;
 import utils.DriverFactory;
+import io.cucumber.java.pt.Dado;
+import io.cucumber.java.pt.Quando;
+import io.cucumber.java.pt.Entao;
+import pages.*;
 
 public class CarrinhoSteps {
 
@@ -27,10 +26,10 @@ public class CarrinhoSteps {
         produtosPage.adicionarProdutoParaCompra();
     }
 
-    @Quando("acessar a tela {string}")
-    public void acessarATela(String nomeTela) {
+    @Quando("acessar a tela Your Cart")
+    public void acessarATelaYourCart() {
         carrinhoPage.aguardarTelaCarrinhoCarregar();
-        Assert.assertEquals(nomeTela, carrinhoPage.tituloPagina());
+        Assert.assertEquals("Your Cart", carrinhoPage.tituloPagina());
     }
 
     @Entao("os produtos adicionados devem ser exibidos com o botão {string} deve estar visível")
@@ -63,14 +62,14 @@ public class CarrinhoSteps {
         Assert.assertEquals(nomeTela, carrinhoPage.tituloPagina());
     }
 
-    @Quando("clicar no botão {string}")
-    public void clicarNoBotao(String botaoRetornarLoja) {
-        Assert.assertTrue("Botão não está visível!", carrinhoPage.botaoEstaVisivel(botaoRetornarLoja));
+    @Quando("clicar no botão Continue Shopping")
+    public void clicarNoBotao() {
+        Assert.assertTrue("Botão não está visível!", carrinhoPage.botaoEstaVisivel("Continue Shopping"));
         carrinhoPage.botaoContinueShopping();
     }
 
     @Entao("o usuário deve ser redirecionado para a tela de {string}")
-    public void oUsuarioDeveSerRedirecionadoParaATelaDeProdutos(String nomeTela) {
+    public void oUsuarioDeveSerRedirecionadoParaATelaDe(String nomeTela) {
         produtosPage.aguardarTelaProdutosCarregar();
         produtosPage.getListaDeProdutos();
         Assert.assertEquals(nomeTela, produtosPage.getTituloPagina());
@@ -80,6 +79,10 @@ public class CarrinhoSteps {
     @Dado("que o usuário tenha adicionado o produto ao carrinho")
     public void queOUsuarioTenhaAdicionadoOProdutoAoCarrinho() {
         produtosPage.adicionarProdutoParaCompra();
+    }
+
+    @Quando("acessar a tela de carrinho")
+    public void acessarATelaDeCarrinho() {
         carrinhoPage.aguardarTelaCarrinhoCarregar();
     }
 
