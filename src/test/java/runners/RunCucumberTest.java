@@ -6,10 +6,11 @@ import io.cucumber.junit.CucumberOptions;
 
 @RunWith(Cucumber.class)
 @CucumberOptions(
-    features = "src/test/resources/features",
-    glue = {"steps", "hooks"},
-    plugin = {"pretty", "html:target/cucumber-reports.html"},
-    monochrome = true
+        features = "src/test/resources/features",
+        glue = {"steps", "hooks"},
+        plugin = {"pretty", "io.qameta.allure.cucumber7jvm.AllureCucumber7Jvm"},
+        monochrome = true
 )
+
 public class RunCucumberTest {
 }

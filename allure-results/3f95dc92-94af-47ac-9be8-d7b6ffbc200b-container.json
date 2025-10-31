@@ -1,0 +1,1 @@
+{"uuid":"3f95dc92-94af-47ac-9be8-d7b6ffbc200b","name":"Cenário: CT003 - Voltar para a loja","children":["ca40dbe6-f5a2-4e69-88a5-d0e7acd5961a"],"befores":[{"name":"hooks.Hooks.beforeScenario()","status":"passed","stage":"finished","steps":[],"attachments":[],"parameters":[],"start":1761936956085,"stop":1761936956410}],"afters":[],"start":1761936956085,"stop":1761936957645}
