@@ -1,1 +1,0 @@
-{"uuid":"25324027-45d4-4984-b58f-417b0ef23789","name":"Cenário: CT002 - Remover item do carrinho","children":["6d6937fe-c40e-4117-b4e4-6261234e997a"],"befores":[{"name":"hooks.Hooks.beforeScenario()","status":"passed","stage":"finished","steps":[],"attachments":[],"parameters":[],"start":1761936952273,"stop":1761936952614}],"afters":[],"start":1761936952272,"stop":1761936956075}

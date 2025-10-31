@@ -1,1 +1,0 @@
-{"uuid":"ebf0cdde-870c-4045-847b-6cf42500e430","name":"Cenário: CT001 - Login com senha inválida","children":["3fbcd508-fd4d-4452-8af8-78918b83a9c9"],"befores":[{"name":"hooks.Hooks.beforeScenario()","status":"passed","stage":"finished","steps":[],"attachments":[],"parameters":[],"start":1761936943947,"stop":1761936945702}],"afters":[],"start":1761936943942,"stop":1761936946275}

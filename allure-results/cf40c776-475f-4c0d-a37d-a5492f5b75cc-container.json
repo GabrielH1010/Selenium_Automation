@@ -1,1 +1,0 @@
-{"uuid":"cf40c776-475f-4c0d-a37d-a5492f5b75cc","name":"Cenário: CT002 - Login com sucesso","children":["9e3cc082-9586-4b42-a5b7-fa22b5e4bcba"],"befores":[{"name":"hooks.Hooks.beforeScenario()","status":"passed","stage":"finished","steps":[],"attachments":[],"parameters":[],"start":1761936946419,"stop":1761936946812}],"afters":[],"start":1761936946418,"stop":1761936947334}
