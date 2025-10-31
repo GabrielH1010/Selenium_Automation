@@ -72,11 +72,10 @@ API_Automation/
 │       │       └── YamlUtils.java
 │       └── resources/
 │           ├── features/            
-│           │   └── Regressivos.feature
-│           └── fixtures/            
-│               ├── criarReserva.json
-│               ├── alterarReserva.json
-│               └── gerarToken.json
+│           │   └── 1 - Cenários da tela de login.feature
+│           │   └── 2 - Cenários da tela de produtos.feature
+│           │   └── 3 - Cenários da tela do carrinho.feature
+│           │   └── 4 - Cenários da tela do checkout.feature
 ├── pom.xml                         
 └── README.md
 ```
