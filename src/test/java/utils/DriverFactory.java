@@ -39,6 +39,16 @@ public class DriverFactory {
             options.addArguments("--remote-allow-origins=*");
             options.addArguments("--guest");
 
+            // Detecta se está rodando no GitHub Actions
+            String isCI = System.getenv("CI");
+
+            if (isCI != null && isCI.equals("true")) {
+                options.addArguments("--headless=new");
+                options.addArguments("--window-size=1920,1080");
+            } else {
+                options.addArguments("--start-maximized");
+            }
+
             driver = new ChromeDriver(options);
         }
         return driver;
