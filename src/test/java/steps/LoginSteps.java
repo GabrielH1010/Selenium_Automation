@@ -5,12 +5,13 @@ import org.openqa.selenium.WebDriver;
 import utils.DriverFactory;
 import io.cucumber.java.pt.Dado;
 import io.cucumber.java.pt.Quando;
+import io.cucumber.java.pt.E;
 import io.cucumber.java.pt.Entao;
 import pages.*;
+import utils.YamlUtils;
 
 public class LoginSteps {
-    private String usuario = "standard_user";
-    private String senha = "secret_sauce";
+
 
     private WebDriver driver;
     private ProdutosPage produtosPage;
@@ -22,17 +23,21 @@ public class LoginSteps {
         this.produtosPage = new ProdutosPage();
     }
 
-    //CT001 - Login com senha inválida
+    //Contexto
     @Dado("que o usuário está na página de login")
     public void queOUsuarioEstaNaPaginaDeLogin() {
         loginPage.acessarPagina();
     }
 
+    //CT001 - Login com senha inválida
     @Quando("ele preenche a senha inválida")
     public void elePreencheASenhaInvalida() {
-        loginPage.preencherUsuario(usuario);
-        loginPage.preencherSenha("senha inválida");
-        loginPage.clicarLogin();
+        loginPage.preencherCampos(YamlUtils.getValorAmbiente("massa.usuario"), "senha123");
+    }
+
+    @E("clicar no botão de {string}")
+    public void clicarEm(String botaoLogin){
+        loginPage.clicarBotao(botaoLogin);
     }
 
     @Entao("deve ser apresentado a mensagem de erro na tela")
@@ -43,16 +48,9 @@ public class LoginSteps {
     }
 
     //CT002 - Login com sucesso
-    @Dado("que o usuário está na página de login do Swag Labs")
-    public void queOUsuarioEstaNaPaginaDeLoginDoSwagLabs() {
-        loginPage.acessarPagina();
-    }
-
     @Quando("ele preenche o usuário e senha válidos")
     public void elePreencheOUsuarioESenhaValidos() {
-        loginPage.preencherUsuario(usuario);
-        loginPage.preencherSenha(senha);
-        loginPage.clicarLogin();
+        loginPage.preencherCampos(YamlUtils.getValorAmbiente("massa.usuario"), YamlUtils.getValorAmbiente("massa.senha"));
     }
 
     @Entao("ele deve ser redirecionado para a tela de produtos")

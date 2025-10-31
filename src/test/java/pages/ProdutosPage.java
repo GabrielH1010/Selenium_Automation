@@ -2,8 +2,6 @@ package pages;
 
 import org.openqa.selenium.*;
 import org.openqa.selenium.support.ui.*;
-import utils.YamlUtils;
-import java.time.Duration;
 import java.util.*;
 import java.util.stream.Collectors;
 
@@ -21,24 +19,17 @@ public class ProdutosPage extends BasePage {
     }
 
     public void aguardarTelaProdutosCarregar() {
-        WebDriverWait wait = new WebDriverWait(driver, Duration.ofSeconds(3));
-        String urlAtual = driver.getCurrentUrl();
-        String urlEsperada = YamlUtils.getValorAmbiente("ambientes.produto");
+        aguardarTelaCarregar("produto", tituloProduto);
 
-        if (!urlAtual.equals(urlEsperada)) {
-            navegar(urlEsperada);
-            wait.until(ExpectedConditions.urlToBe(urlEsperada));
-            JavascriptExecutor js = (JavascriptExecutor) driver;
-            js.executeScript("window.localStorage.setItem('session-username', 'standard_user');");
-            driver.navigate().refresh();
-        }
+        JavascriptExecutor js = (JavascriptExecutor) driver;
+        js.executeScript("window.localStorage.setItem('session-username', 'standard_user');");
+        driver.navigate().refresh();
 
         try {
             driver.switchTo().alert().dismiss();
         } catch (NoAlertPresentException ignored) {}
 
         wait.until(ExpectedConditions.visibilityOfElementLocated(filtro));
-        wait.until(ExpectedConditions.visibilityOfElementLocated(tituloProduto));
     }
 
     public List<String> getListaDeProdutos() {

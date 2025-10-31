@@ -1,11 +1,11 @@
 package steps;
 
+import org.junit.Assert;
+import org.openqa.selenium.WebDriver;
 import io.cucumber.java.pt.Dado;
 import io.cucumber.java.pt.Quando;
 import io.cucumber.java.pt.Entao;
 import io.cucumber.java.pt.E;
-import org.junit.Assert;
-import org.openqa.selenium.WebDriver;
 import pages.*;
 import utils.DriverFactory;
 
@@ -23,25 +23,22 @@ public class CheckoutSteps {
         this.checkoutPage = new CheckoutPage();
     }
 
-    private void garantirProdutoNoCarrinho() {
+    //Contexto
+    @Dado("que o usuário esteja na tela de checkout")
+    public void queOUsuarioEstejaNaTelaDeCheckout() {
         if (carrinhoPage.carrinhoEstaVazio()) {
             System.out.println("[INFO] Carrinho vazio. Adicionando produto para o teste...");
             produtosPage.adicionarProdutoParaCompra();
             carrinhoPage.aguardarTelaCarrinhoCarregar();
         }
-        checkoutPage.botaoCheckout();
+        checkoutPage.clicarBotao("Checkout");
         checkoutPage.aguardarTelaCheckoutSuasInformacoes();
     }
 
     // CT001 - Campos obrigatórios não preenchidos
-    @Dado("que o usuário esteja na tela de checkout")
-    public void queOUsuarioEstejaNaTelaDeCheckout() {
-        garantirProdutoNoCarrinho();
-    }
-
     @Quando("clicar no botão {string} sem preencher nenhum campo")
-    public void clicarNoBotaoSemPreencherOsCampos(String botaoCheckout) {
-        checkoutPage.botaoContinue();
+    public void clicarNoBotaoSemPreencherOsCampos(String botaoContinue) {
+        checkoutPage.clicarBotao(botaoContinue);
     }
 
     @Entao("a mensagem de erro {string} deve ser exibida")
@@ -50,23 +47,20 @@ public class CheckoutSteps {
     }
 
     // CT002 - Preencher apenas o campo First Name
-    @Quando("preencher apenas o campo {string} e clicar no botão {string}")
-    public void preencherApenasOCampoEClicarNoBotao(String campo, String botao) {
-        checkoutPage.preencherCampo(campo, "Gabriel");
-        checkoutPage.botaoContinue();
+    @Quando("preencher apenas o campo First Name com {string}")
+    public void preencherApenasOCampo(String primeiroNome) {
+        checkoutPage.preencherCampos(primeiroNome, "", "");
     }
 
     // CT003 - Visualizar resumo da compra antes de finalizar
-    @Dado("que o usuário tenha preenchido corretamente os dados de checkout")
-    public void queOUsuarioTenhaPreenchidoCorretamenteOsDadosDeCheckout() {
-        garantirProdutoNoCarrinho();
-        checkoutPage.aguardarTelaCheckoutSuasInformacoes();
-        checkoutPage.preencherCamposCorretamente();
+    @Quando("preencher com os dados {string}, {string} e {string}")
+    public void preencherComOsDadosE(String nome, String sobreNome, String codPostal) {
+        checkoutPage.preencherCampos(nome, sobreNome, codPostal);
     }
 
-    @Quando("clicar em {string}")
-    public void clicarEm(String botao) {
-        checkoutPage.botaoContinue();
+    @E("clicar em {string}")
+    public void clicarEm(String botaoContinue) {
+        checkoutPage.clicarBotao(botaoContinue);
     }
 
     @Entao("o resumo da compra deve exibir os produtos adicionados com nome e valores")
@@ -76,19 +70,6 @@ public class CheckoutSteps {
     }
 
     // CT004 - Finalizar compra com sucesso
-    @Dado("que o usuário esteja na tela de resumo do produto")
-    public void queOUsuarioEstejaNaTelaDeResumoDoProduto() {
-        garantirProdutoNoCarrinho();
-        checkoutPage.aguardarTelaCheckoutSuasInformacoes();
-        checkoutPage.preencherCamposCorretamente();
-        checkoutPage.botaoContinue();
-    }
-
-    @Quando("clicar no botão {string}")
-    public void clicarNoBotao(String arg0) {
-        checkoutPage.clicarFinish();
-    }
-
     @Entao("a mensagem {string} deve ser exibida")
     public void aMensagemDeveSerExibida(String mensagemSucesso) {
         Assert.assertEquals(mensagemSucesso, checkoutPage.capturarMensagemSucesso());

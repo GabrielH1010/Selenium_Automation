@@ -40,7 +40,6 @@ public class DriverFactory {
             options.addArguments("--guest");
 
             driver = new ChromeDriver(options);
-            System.out.println("----------Navegador iniciado----------");
         }
         return driver;
     }
@@ -49,7 +48,6 @@ public class DriverFactory {
         if (driver != null) {
             driver.quit();
             driver = null;
-            System.out.println("----------Navegador encerrado----------");
         }
     }
 }
